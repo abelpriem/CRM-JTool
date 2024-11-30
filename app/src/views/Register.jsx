@@ -38,21 +38,21 @@ export default function Register() {
             )}
 
             <form onSubmit={handleSubmitRegister} className="flex flex-col space-y-3 w-80 p-3">
-                <label className="text-sm font-bold">Username</label>
+                <label className="text-sm font-bold">Nombre Usuario</label>
                 <input className="p-2 border border-gray-300 rounded-md" type="text" name="username" placeholder="Introduce tu nombre" required />
 
                 <label className="text-sm font-bold">Email</label>
                 <input className="p-2 border border-gray-300 rounded-md" type="email" name="email" placeholder="Introduce tu email" required />
 
-                <label className="text-sm font-bold">Password</label>
+                <label className="text-sm font-bold">Contraseña</label>
                 <input className="p-2 border border-gray-300 rounded-md" type="password" name="password" placeholder="Introduce tu contraseña "required />
 
-                <label className="text-sm font-bold">Repeat password</label>
+                <label className="text-sm font-bold">Repetir contraseña</label>
                 <input className="p-2 border border-gray-300 rounded-md" type="password" name="repeatPassword" placeholder="Repite la contraseña "required />
 
-                <button className="bg-sky-900 text-white py-2 px-4 rounded-md hover:bg-sky-500" type="submit" value="Create account">Register</button>
+                <button className="bg-sky-900 text-white py-2 px-4 rounded-md hover:bg-sky-500" type="submit" value="Create account">Crear Cuenta</button>
 
-                <a href="/login" className="font-bold underline">¡Come back to Login!</a>
+                <a href="/login" className="font-bold underline">¡Vuelve a iniciar sesión!</a>
             </form>
         </div>
     </>
