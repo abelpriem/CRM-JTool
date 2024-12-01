@@ -1,7 +1,12 @@
 package api.crm.backend.dto.auth;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class LoginRequest {
+    @NotBlank(message = "El email no puede estar vacío")
     private String email;
+
+    @NotBlank(message = "La contraseña no puede estar vacía")
     private String password;
 
     public LoginRequest(String email, String password) {

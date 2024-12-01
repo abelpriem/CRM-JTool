@@ -11,6 +11,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import api.crm.backend.config.jwt.JwtUtils;
+
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
@@ -20,13 +22,17 @@ public class SecurityConfig {
     }
 
     @Bean
+    public JwtUtils jwtUtils() {
+        return new JwtUtils();
+    }
+
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Desactiva CSRF si no es necesario
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll() // Ajusta según tus rutas
-                )
-                .cors(); // Habilita CORS usando el CorsConfigurationSource definido
+                        .anyRequest().permitAll())
+                .cors();
 
         return http.build();
     }

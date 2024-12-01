@@ -5,18 +5,18 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public class RegisterRequest {
-    @NotBlank(message = "Username cannot be empty")
+    @NotBlank(message = "El nombre de usuario no puede estar vacío")
     private String username;
 
-    @Email(message = "Invalid email format")
-    @NotBlank(message = "Email cannot be empty")
+    @Email(message = "Formato de email inválido")
+    @NotBlank(message = "El email no puede estar vacío")
     private String email;
 
-    @NotBlank(message = "Password cannot be empty")
-    @Size(min = 6, message = "Password must be at least 6 characters")
+    @NotBlank(message = "La contraseña no puede estar vacía")
+    @Size(min = 6, message = "La contraseña ha de tener, al menos, 6 caracteres")
     private String password;
 
-    @NotBlank(message = "Repeat password cannot be empty")
+    @NotBlank(message = "La repetición de la contraseña no puede estar vacía")
     private String repeatPassword;
 
     public RegisterRequest(String username, String email, String password, String repeatPassword) {

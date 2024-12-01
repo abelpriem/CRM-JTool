@@ -1,3 +1,4 @@
+import session from '../helpers/auth/session.js'
 
 export default function Header() {
     return <>
@@ -8,7 +9,7 @@ export default function Header() {
                 </div>
                 <div className="pr-32 space-x-4 flex items-center">
                     <div className="flex items-center mr-4">
-                        <p className="font-extrabold">Bienvenido! ADMIN</p>
+                        <p className="font-extrabold">{`Bienvenido! ${session.username}`}</p>
                     </div>
                     <div className="space-x-4">
                         <a href="/profile">PERFIL</a>

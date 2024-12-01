@@ -1,5 +1,7 @@
 package api.crm.backend.controllers;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import api.crm.backend.config.jwt.JwtUtils;
+import api.crm.backend.dto.auth.LoginRequest;
 import api.crm.backend.dto.auth.RegisterRequest;
 import api.crm.backend.services.UserService;
 import jakarta.validation.Valid;
@@ -18,14 +22,29 @@ public class UserController {
 
     @Autowired
     UserService userService;
+    JwtUtils jwtUtils;
 
-    @PostMapping("/users")
-    public ResponseEntity<String> createUser(@Valid @RequestBody RegisterRequest registerRequest) {
+    @PostMapping("/users/register")
+    public ResponseEntity<Map<String, String>> createUser(@Valid @RequestBody RegisterRequest registerRequest) {
         try {
             userService.create(registerRequest);
-            return new ResponseEntity<>("User successfully created", HttpStatus.CREATED);
+
+            Map<String, String> response = Map.of("message", "Usuario creado correctamente");
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (IllegalArgumentException error) {
-            return new ResponseEntity<>(error.getMessage(), HttpStatus.BAD_REQUEST);
+            Map<String, String> errorResponse = Map.of("message", error.getMessage());
+            return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/users/auth")
+    public ResponseEntity<Map<String, String>> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+        try {
+            Map<String, String> response = userService.login(loginRequest);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (IllegalArgumentException error) {
+            Map<String, String> errorResponse = Map.of("message", error.getMessage());
+            return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
         }
     }
 }

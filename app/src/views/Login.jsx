@@ -1,10 +1,42 @@
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { authenticateUser } from '../logic/index.js'
 
 export default function Login() {
+    const [showError, setShowError] = useState('')
+    const [showMessage, setShowMessage] = useState('')
+    const navigate = useNavigate()
+
+    async function handleSubmitLogin(event) {
+        event.preventDefault()
+
+        setShowError('')
+        setShowMessage('')
+
+        const email = event.target.email.value
+        const password = event.target.password.value
+
+        try {
+            await authenticateUser(email, password)
+            navigate("/home")
+        } catch(error) {
+            setShowError(error.message)
+        }
+    }
+
     return <>
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
             <h1 className="text-2xl font-bold mb-8">JTool - CRM</h1>
 
-            <form className="flex flex-col space-y-3 w-80 p-3">
+            {showError && (
+                <div className="font-bold text-red-600">{showError}</div>
+            )}
+
+            {showMessage && (
+                <div className="font-bold text-red-600">{showMessage}</div>
+            )}
+
+            <form onSubmit={handleSubmitLogin} className="flex flex-col space-y-3 w-80 p-3">
                 <label className="text-sm font-bold">Email</label>
                 <input className="p-2 border border-gray-300 rounded-md" type="email" name="email" placeholder="Introduce tu email" required />
 

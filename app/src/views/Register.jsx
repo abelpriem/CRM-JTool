@@ -4,7 +4,6 @@ import { registerUser } from '../logic/index.js'
 
 export default function Register() {
     const [showError, setShowError] = useState('')
-    const [showMessage, setShowMessage] = useState('')
     const navigate = useNavigate()
 
     async function handleSubmitRegister(event) {
@@ -33,10 +32,6 @@ export default function Register() {
                 <div className="font-bold text-red-600">{showError}</div>
             )}
 
-            {showMessage && (
-                <div className="font-bold text-red-600">{showMessage}</div>
-            )}
-
             <form onSubmit={handleSubmitRegister} className="flex flex-col space-y-3 w-80 p-3">
                 <label className="text-sm font-bold">Nombre Usuario</label>
                 <input className="p-2 border border-gray-300 rounded-md" type="text" name="username" placeholder="Introduce tu nombre" required />
@@ -47,7 +42,7 @@ export default function Register() {
                 <label className="text-sm font-bold">Contraseña</label>
                 <input className="p-2 border border-gray-300 rounded-md" type="password" name="password" placeholder="Introduce tu contraseña "required />
 
-                <label className="text-sm font-bold">Repetir contraseña</label>
+                <label className="text-sm font-bold">Repetir</label>
                 <input className="p-2 border border-gray-300 rounded-md" type="password" name="repeatPassword" placeholder="Repite la contraseña "required />
 
                 <button className="bg-sky-900 text-white py-2 px-4 rounded-md hover:bg-sky-500" type="submit" value="Create account">Crear Cuenta</button>
