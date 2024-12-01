@@ -1,5 +1,6 @@
 package api.crm.backend.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,7 +16,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @SuppressWarnings("null")
     Optional<User> findById(Long id);
 
+    List<User> findByRol(String rol);
+
     boolean existsByEmail(String email);
 
     boolean existsByUsername(String username);
+
 }

@@ -1,6 +1,8 @@
 package api.crm.backend.services;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -9,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import api.crm.backend.config.jwt.JwtUtils;
+import api.crm.backend.dto.UserResponseDTO;
 import api.crm.backend.dto.auth.LoginRequest;
 import api.crm.backend.dto.auth.RegisterRequest;
 import api.crm.backend.models.User;
@@ -84,6 +87,24 @@ public class UserService implements UserDetailsService {
             System.out.println(error.getMessage());
             throw error;
         }
+    }
+
+    public List<UserResponseDTO> getClients(String authorizationHeader) {
+        String token = authorizationHeader.substring(7);
+        String emailFromToken = jwtUtils.getEmailFromToken(token);
+
+        User user = userRepository.findByEmail(emailFromToken)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario con el correo del token no encontrado"));
+
+        if (!user.getToken().equals(token)) {
+            throw new SecurityException("El token enviado no coincide con el almacenado para el usuario");
+        }
+
+        List<User> clients = userRepository.findByRol("client");
+
+        return clients.stream()
+                .map(UserResponseDTO::new)
+                .collect(Collectors.toList());
     }
 
     @Override

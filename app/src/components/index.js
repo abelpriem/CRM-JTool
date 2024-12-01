@@ -1,4 +1,4 @@
-import Client from './Client'
+import ClientList from './ClientList'
 import Clients from './Clients'
 import Header from './Header'
 import Navigation from './Navigation'
@@ -7,7 +7,7 @@ import PrivateRoute from './PrivateRoute'
 import Products from './Products'
 
 export {
-    Client, Clients, Header,
+    ClientList, Clients, Header,
     Navigation, Orders, PrivateRoute, Products
 }
 

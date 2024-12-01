@@ -27,7 +27,7 @@ export default function Header() {
                     </div>
                     <div className="space-x-4">
                         <a href="/profile">PERFIL</a>
-                        <a href="" onClick={handleLogout}>LOGOUT</a>
+                        <a href="/logout" onClick={handleLogout}>LOGOUT</a>
                     </div>
                 </div>
             </div>
