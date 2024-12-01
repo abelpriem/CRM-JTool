@@ -1,14 +1,16 @@
 import session from '../helpers/auth/session.js'
 
-export default function editClient(clientId) {
+export default function changePassword(password, newPassword, confirmPassword) {
     const req = {
         method: 'PATCH',
         headers: {
-            Authorization: `Bearer ${session.token}`
-        }
+            Authorization: `Bearer ${session.token}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ password, newPassword, confirmPassword })
     }
 
-    return fetch(`http://localhost:8080/api/clients/edit/${clientId}`, req)
+    return fetch("http://localhost:8080/api/users/change-password", req)
         .catch(error => {throw new Error(error.message)})
         .then(res => {
             if (!res.ok) {

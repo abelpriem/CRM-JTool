@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -17,6 +18,7 @@ import api.crm.backend.config.jwt.JwtUtils;
 import api.crm.backend.dto.UserResponseDTO;
 import api.crm.backend.dto.auth.LoginRequest;
 import api.crm.backend.dto.auth.RegisterRequest;
+import api.crm.backend.dto.profile.ChangePasswordRequest;
 import api.crm.backend.services.UserService;
 import jakarta.validation.Valid;
 
@@ -81,6 +83,25 @@ public class UserController {
             return new ResponseEntity<>(clients, HttpStatus.OK);
         } catch (IllegalArgumentException error) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+    @PatchMapping("/users/change-password")
+    public ResponseEntity<Map<String, String>> changeUserPassword(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @Valid @RequestBody ChangePasswordRequest changePasswordRequest) {
+        try {
+            if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+
+            userService.changePassword(authorizationHeader, changePasswordRequest);
+
+            Map<String, String> response = Map.of("message", "Contraseña cambiada correctamente");
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (IllegalArgumentException error) {
+            Map<String, String> errorResponse = Map.of("message", error.getMessage());
+            return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
         }
     }
 }

@@ -8,7 +8,7 @@ export default function deleteClient(clientId) {
         }
     }
 
-    return fetch(`http://localhost:8080/clients/edit/${clientId}`, req)
+    return fetch(`http://localhost:8080/api/clients/edit/${clientId}`, req)
         .catch(error => {throw new Error(error.message)})
         .then(res => {
             if (!res.ok) {

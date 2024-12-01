@@ -2,11 +2,13 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Header } from '../components/index.js'
 import session from '../helpers/auth/session.js'
-import { retrieveUser } from '../logic/index.js'
+import { changePassword, retrieveUser } from '../logic/index.js'
+
 
 export default function Profile() {
     const [user, setUser] = useState([])
     const [showError, setShowError] = useState('')
+    const [showMessage, setShowMessage] = useState('')
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -25,12 +27,16 @@ export default function Profile() {
     async function handlePasswordChange(event) {
         event.preventDefault()
 
-        const currentPassword = event.target.currentPassword.value
+        setShowError('')
+        setShowMessage('')
+
+        const password = event.target.password.value
         const newPassword = event.target.newPassword.value
-        const repeatPassword = event.target.repeatPassword.value
+        const confirmPassword = event.target.confirmPassword.value
 
         try {
-            // TODO
+            await changePassword(password, newPassword, confirmPassword)
+            setShowMessage("Contraseña cambiada correctamente")
         } catch(error) {
             setShowError(error.message)
         }
@@ -62,13 +68,17 @@ export default function Profile() {
                         <div className="font-bold text-red-600">{showError}</div>
                     )}
 
-                    <form onSubmit={handlePasswordChange} className="space-y-6">
+                    {showMessage && (
+                        <div className="font-bold text-green-600 ">{showMessage}</div>
+                    )}
+
+                    <form onSubmit={handlePasswordChange} className="space-y-6 mt-2">
                         <div>
-                            <label htmlFor="currentPassword" className="block text-lg font-semibold">Contraseña Actual</label>
+                            <label htmlFor="password" className="block text-lg font-semibold">Contraseña Actual</label>
                             <input
                                 type="password"
-                                id="currentPassword"
-                                name="currentPassword"
+                                id="password"
+                                name="password"
                                 className="w-full p-3 border border-gray-300 rounded-md"
                                 required
                             />

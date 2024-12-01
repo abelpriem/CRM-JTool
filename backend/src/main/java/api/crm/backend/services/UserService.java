@@ -14,6 +14,7 @@ import api.crm.backend.config.jwt.JwtUtils;
 import api.crm.backend.dto.UserResponseDTO;
 import api.crm.backend.dto.auth.LoginRequest;
 import api.crm.backend.dto.auth.RegisterRequest;
+import api.crm.backend.dto.profile.ChangePasswordRequest;
 import api.crm.backend.models.User;
 import api.crm.backend.repository.UserRepository;
 
@@ -119,6 +120,25 @@ public class UserService implements UserDetailsService {
         return clients.stream()
                 .map(UserResponseDTO::new)
                 .collect(Collectors.toList());
+    }
+
+    public User changePassword(String authorizationHeader, ChangePasswordRequest changePasswordRequest) {
+        String token = authorizationHeader.substring(7);
+        String emailToken = jwtUtils.getEmailFromToken(token);
+
+        User user = userRepository.findByEmail(emailToken)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario con el correo del token no encontrado"));
+
+        if (!passwordEncoder.matches(changePasswordRequest.getPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("Credenciales incorrectas. Inténtelo de nuevo");
+        }
+
+        if (!changePasswordRequest.getNewPassword().equals(changePasswordRequest.getConfirmPassword())) {
+            throw new IllegalArgumentException("La nueva contraseña y la confirmación han de ser iguales");
+        }
+
+        user.setPassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
+        return userRepository.save(user);
     }
 
     @Override
