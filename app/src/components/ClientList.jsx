@@ -4,6 +4,14 @@ export default function ClientList(props) {
 
     const clients = props.clients
 
+    async function handleEditClient() {
+
+    }
+
+    async function handleDeleteClient() {
+
+    }
+
     return <>
         {clients.map(client => (
             <div class="space-y-6 ml-10" key={client.userId}>
@@ -17,13 +25,13 @@ export default function ClientList(props) {
 
                     <div className="flex flex-col items-end space-y-2">
                         {session.rol === "admin" && (
-                            <a href="#" className="flex items-center w-40 bg-blue-600 text-white py-2 px-4 rounded-lg">
-                                    <i className="fas fa-pen-alt mr-7"></i>Editar</a>
+                            <button onClick={handleEditClient} className="flex items-center w-40 bg-blue-600 text-white py-2 px-4 rounded-lg">
+                                    <i className="fas fa-pen-alt mr-7"></i>Editar</button>
                         )}
 
                         {session.rol === "admin" && (
-                            <a href="#" className="flex items-center w-40 bg-red-600 text-white py-2 px-4 rounded-lg">
-                                    <i className="fas fa-times mr-7"></i>Eliminar</a>
+                            <button onClick={handleDeleteClient} className="flex items-center w-40 bg-red-600 text-white py-2 px-4 rounded-lg">
+                                    <i className="fas fa-times mr-7"></i>Eliminar</button>
                         )}
                     </div>
                 </div>
