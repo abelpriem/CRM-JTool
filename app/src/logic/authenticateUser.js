@@ -23,6 +23,7 @@ export default function authenticateUser(email, password) {
                 .then(data => {
                     session.username = data.username
                     session.token = data.token
+                    session.rol = data.rol
                 })
         })
  }

@@ -22,6 +22,18 @@ const session = {
     get username() {
         return sessionStorage.username ? sessionStorage.username : null
     },
+
+    set rol(rol) {
+        if (rol) {
+            sessionStorage.rol = rol
+        } else {
+            delete sessionStorage.rol
+        }
+    },
+
+    get rol() {
+        return sessionStorage.rol ? sessionStorage.rol : null
+    }
 }
 
 export default session

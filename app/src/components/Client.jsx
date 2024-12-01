@@ -1,3 +1,4 @@
+import session from '../helpers/auth/session.js'
 
 export default function Client() {
     return <>
@@ -11,10 +12,15 @@ export default function Client() {
                 </div>
 
                 <div className="flex flex-col items-end space-y-2">
-                    <a href="#" className="flex items-center w-40 bg-blue-600 text-white py-2 px-4 rounded-lg">
-                            <i className="fas fa-pen-alt mr-7"></i>Editar</a>
-                    <a href="#" className="flex items-center w-40 bg-red-600 text-white py-2 px-4 rounded-lg">
-                            <i className="fas fa-times mr-7"></i>Eliminar</a>
+                    {session.rol === "admin" && (
+                        <a href="#" className="flex items-center w-40 bg-blue-600 text-white py-2 px-4 rounded-lg">
+                                <i className="fas fa-pen-alt mr-7"></i>Editar</a>
+                    )}
+
+                    {session.rol === "admin" && (
+                        <a href="#" className="flex items-center w-40 bg-red-600 text-white py-2 px-4 rounded-lg">
+                                <i className="fas fa-times mr-7"></i>Eliminar</a>
+                    )}
                 </div>
             </div>
         </div>

@@ -79,7 +79,7 @@ public class UserService implements UserDetailsService {
             user.setToken(token);
             userRepository.save(user);
 
-            return Map.of("username", user.getUsername(), "token", user.getToken());
+            return Map.of("username", user.getUsername(), "token", user.getToken(), "rol", user.getRol());
         } catch (IllegalArgumentException error) {
             System.out.println(error.getMessage());
             throw error;
