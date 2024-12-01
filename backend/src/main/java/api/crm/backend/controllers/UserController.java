@@ -52,6 +52,20 @@ public class UserController {
         }
     }
 
+    @GetMapping("/users")
+    public ResponseEntity<List<UserResponseDTO>> getUser(@RequestHeader("Authorization") String authorizationHeader) {
+        try {
+            if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+
+            List<UserResponseDTO> user = userService.getUser(authorizationHeader);
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } catch (IllegalArgumentException error) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
     @GetMapping("/users/clients")
     public ResponseEntity<List<UserResponseDTO>> getClients(
             @RequestHeader("Authorization") String authorizationHeader) {

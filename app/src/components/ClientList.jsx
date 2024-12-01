@@ -1,15 +1,18 @@
+import { useNavigate } from 'react-router-dom'
 import session from '../helpers/auth/session.js'
+import { deleteClient } from '../logic/index.js'
 
 export default function ClientList(props) {
 
     const clients = props.clients
+    const navigate = useNavigate()
 
-    async function handleEditClient() {
-
-    }
-
-    async function handleDeleteClient() {
-
+    async function handleDeleteClient(clientId) {
+        try {
+            await deleteClient(clientId)
+        } catch(error) {
+            navigate("/404")
+        }
     }
 
     return <>
@@ -25,8 +28,8 @@ export default function ClientList(props) {
 
                     <div className="flex flex-col items-end space-y-2">
                         {session.rol === "admin" && (
-                            <button onClick={handleEditClient} className="flex items-center w-40 bg-blue-600 text-white py-2 px-4 rounded-lg">
-                                    <i className="fas fa-pen-alt mr-7"></i>Editar</button>
+                            <a href={`/home/clients/edit/${client.userId}`} className="flex items-center w-40 bg-blue-600 text-white py-2 px-4 rounded-lg">
+                                    <i className="fas fa-pen-alt mr-7"></i>Editar</a>
                         )}
 
                         {session.rol === "admin" && (

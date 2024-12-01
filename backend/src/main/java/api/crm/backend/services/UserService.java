@@ -89,6 +89,20 @@ public class UserService implements UserDetailsService {
         }
     }
 
+    public List<UserResponseDTO> getUser(String authorizationHeader) {
+        String token = authorizationHeader.substring(7);
+        String emailFromToken = jwtUtils.getEmailFromToken(token);
+
+        User user = userRepository.findByEmail(emailFromToken)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario con el correo del token no encontrado"));
+
+        if (!user.getToken().equals(token)) {
+            throw new SecurityException("El token enviado no coincide con el almacenado para el usuario");
+        }
+
+        return List.of(new UserResponseDTO(user));
+    }
+
     public List<UserResponseDTO> getClients(String authorizationHeader) {
         String token = authorizationHeader.substring(7);
         String emailFromToken = jwtUtils.getEmailFromToken(token);

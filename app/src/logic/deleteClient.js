@@ -1,14 +1,14 @@
 import session from '../helpers/auth/session.js'
 
-export default function retrieveClients() {
+export default function deleteClient(clientId) {
     const req = {
-        method: 'GET',
+        method: 'DELETE',
         headers: {
             Authorization: `Bearer ${session.token}`
         }
     }
 
-    return fetch("http://localhost:8080/api/users/clients", req)
+    return fetch(`http://localhost:8080/clients/edit/${clientId}`, req)
         .catch(error => {throw new Error(error.message)})
         .then(res => {
             if (!res.ok) {
@@ -16,11 +16,5 @@ export default function retrieveClients() {
                     .catch(error => {throw new Error(error.message)})
                     .then(body => {throw new Error(body.message)})
             }
-
-            return res.json()
-                .catch(error => {throw new Error(error.message)})
-                .then(clients => {
-                    return clients
-                })
         })
 }

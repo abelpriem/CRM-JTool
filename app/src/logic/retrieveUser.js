@@ -1,6 +1,6 @@
 import session from '../helpers/auth/session.js'
 
-export default function retrieveClients() {
+export default function retrieveUser() {
     const req = {
         method: 'GET',
         headers: {
@@ -8,7 +8,7 @@ export default function retrieveClients() {
         }
     }
 
-    return fetch("http://localhost:8080/api/users/clients", req)
+    return fetch("http://localhost:8080/api/users", req)
         .catch(error => {throw new Error(error.message)})
         .then(res => {
             if (!res.ok) {
@@ -19,8 +19,8 @@ export default function retrieveClients() {
 
             return res.json()
                 .catch(error => {throw new Error(error.message)})
-                .then(clients => {
-                    return clients
+                .then(user => {
+                    return user
                 })
         })
 }

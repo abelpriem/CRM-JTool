@@ -1,3 +1,4 @@
+import ClientEdit from './ClientEdit'
 import ClientList from './ClientList'
 import Clients from './Clients'
 import Header from './Header'
@@ -7,7 +8,7 @@ import PrivateRoute from './PrivateRoute'
 import Products from './Products'
 
 export {
-    ClientList, Clients, Header,
+    ClientEdit, ClientList, Clients, Header,
     Navigation, Orders, PrivateRoute, Products
 }
 
