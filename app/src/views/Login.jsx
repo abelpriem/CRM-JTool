@@ -4,14 +4,12 @@ import { authenticateUser } from '../logic/index.js'
 
 export default function Login() {
     const [showError, setShowError] = useState('')
-    const [showMessage, setShowMessage] = useState('')
     const navigate = useNavigate()
 
     async function handleSubmitLogin(event) {
         event.preventDefault()
 
         setShowError('')
-        setShowMessage('')
 
         const email = event.target.email.value
         const password = event.target.password.value
@@ -19,7 +17,7 @@ export default function Login() {
         try {
             await authenticateUser(email, password)
             navigate("/home")
-        } catch(error) {
+        } catch (error) {
             setShowError(error.message)
         }
     }
@@ -32,16 +30,12 @@ export default function Login() {
                 <div className="font-bold text-red-600">{showError}</div>
             )}
 
-            {showMessage && (
-                <div className="font-bold text-red-600">{showMessage}</div>
-            )}
-
             <form onSubmit={handleSubmitLogin} className="flex flex-col space-y-3 w-80 p-3">
                 <label className="text-sm font-bold">Email</label>
                 <input className="p-2 border border-gray-300 rounded-md" type="email" name="email" placeholder="Introduce tu email" required />
 
                 <label className="text-sm font-bold">Contraseña</label>
-                <input className="p-2 border border-gray-300 rounded-md" type="password" name="password" placeholder="Introduce tu contraseña "required />
+                <input className="p-2 border border-gray-300 rounded-md" type="password" name="password" placeholder="Introduce tu contraseña " required />
 
                 <button className="bg-sky-900 text-white py-2 px-4 rounded-md hover:bg-sky-500" type="submit">Iniciar Sesión</button>
 

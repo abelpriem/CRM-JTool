@@ -6,13 +6,13 @@ import { ClientList } from './index.js'
 export default function Clients() {
     const [clients, setClients] = useState([])
     const [showError, setShowError] = useState('')
-    
+
     useEffect(() => {
         async function fetchClients() {
             try {
                 const clientsList = await retrieveClients()
                 setClients(clientsList)
-            } catch(error) {
+            } catch (error) {
                 setShowError(error.message)
             }
         }
@@ -28,13 +28,13 @@ export default function Clients() {
         )}
 
         {session.rol === "admin" && (
-                <a href="/nuevo-cliente" className="flex items-center w-40 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-800">
-                    <i className="fa fa-plus mr-2"></i>Nuevo Cliente</a>
-            )}
+            <a href="/home/clients/new-client" className="flex items-center w-40 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-800">
+                <i className="fa fa-plus mr-2"></i>Nuevo Cliente</a>
+        )}
 
         <ul>
             {clients.length
-                ? <ClientList clients={clients} setClients={setClients}/>
+                ? <ClientList clients={clients} setClients={setClients} />
                 : <p className='font-bold mt4 my-5 text-xl'>No hay clientes en la base de datos</p>
             }
         </ul>

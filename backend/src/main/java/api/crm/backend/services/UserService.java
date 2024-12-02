@@ -14,6 +14,7 @@ import api.crm.backend.config.jwt.JwtUtils;
 import api.crm.backend.dto.UserResponseDTO;
 import api.crm.backend.dto.auth.LoginRequest;
 import api.crm.backend.dto.auth.RegisterRequest;
+import api.crm.backend.dto.clients.NewClientsResponse;
 import api.crm.backend.dto.profile.ChangePasswordRequest;
 import api.crm.backend.models.User;
 import api.crm.backend.repository.UserRepository;
@@ -95,7 +96,7 @@ public class UserService implements UserDetailsService {
         String emailFromToken = jwtUtils.getEmailFromToken(token);
 
         User user = userRepository.findByEmail(emailFromToken)
-                .orElseThrow(() -> new IllegalArgumentException("Usuario con el correo del token no encontrado"));
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado. Inténtelo de nuevo"));
 
         if (!user.getToken().equals(token)) {
             throw new SecurityException("El token enviado no coincide con el almacenado para el usuario");
@@ -109,7 +110,7 @@ public class UserService implements UserDetailsService {
         String emailFromToken = jwtUtils.getEmailFromToken(token);
 
         User user = userRepository.findByEmail(emailFromToken)
-                .orElseThrow(() -> new IllegalArgumentException("Usuario con el correo del token no encontrado"));
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado. Inténtelo de nuevo"));
 
         if (!user.getToken().equals(token)) {
             throw new SecurityException("El token enviado no coincide con el almacenado para el usuario");
@@ -127,7 +128,7 @@ public class UserService implements UserDetailsService {
         String emailToken = jwtUtils.getEmailFromToken(token);
 
         User user = userRepository.findByEmail(emailToken)
-                .orElseThrow(() -> new IllegalArgumentException("Usuario con el correo del token no encontrado"));
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado. Inténtelo de nuevo"));
 
         if (!user.getToken().equals(token)) {
             throw new SecurityException("El token enviado no coincide con el almacenado para el usuario");
@@ -150,7 +151,7 @@ public class UserService implements UserDetailsService {
         String emailToken = jwtUtils.getEmailFromToken(token);
 
         User userRequest = userRepository.findByEmail(emailToken)
-                .orElseThrow(() -> new IllegalArgumentException("Usuario con el correo del token no encontrado"));
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado. Inténtelo de nuevo"));
 
         if (!userRequest.getToken().equals(token)) {
             throw new SecurityException("El token enviado no coincide con el almacenado para el usuario");
@@ -161,9 +162,39 @@ public class UserService implements UserDetailsService {
         }
 
         User userToDelete = userRepository.findById(clientId)
-                .orElseThrow(() -> new IllegalArgumentException("Usuario seleccionado no encontrado"));
+                .orElseThrow(
+                        () -> new IllegalArgumentException("Usuario seleccionado no encontrado. Inténtelo de nuevo"));
 
         userRepository.deleteById(userToDelete.getUserId());
+    }
+
+    public User createClient(String authorizationHeader, NewClientsResponse newClientsResponse) {
+        String token = authorizationHeader.substring(7);
+        String emailToken = jwtUtils.getEmailFromToken(token);
+
+        User userRequest = userRepository.findByEmail(emailToken)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado. Inténtelo de nuevo"));
+
+        if (!userRequest.getToken().equals(token)) {
+            throw new SecurityException("El token enviado no coincide con el almacenado para el usuario");
+        }
+
+        if (!"admin".equals(userRequest.getRol())) {
+            throw new SecurityException("Usuario no autorizado. Solo los ADMIN pueden realizar esta acción");
+        }
+
+        User newClient = new User();
+
+        newClient.setUsername(newClientsResponse.getName());
+        newClient.setEmail(newClientsResponse.getEmail());
+        newClient.setCompany(newClientsResponse.getCompany());
+        newClient.setPhone(newClientsResponse.getPhone());
+
+        newClient.setRol("client");
+        newClient.setPassword(passwordEncoder.encode("123123123"));
+        newClient.setActive(false);
+
+        return userRepository.save(newClient);
     }
 
     @Override

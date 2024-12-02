@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
-import { ClientEdit, Clients, Header, Navigation, Orders, Products } from '../components/index.js'
+import { ClientEdit, Clients, Header, Navigation, NewClient, Orders, Products } from '../components/index.js'
 
 export default function Home() {
     return <>
@@ -15,7 +15,8 @@ export default function Home() {
                         <Route path="clients" element={<Clients />} />
                         <Route path="products" element={<Products />} />
                         <Route path="orders" element={<Orders />} />
-                        <Route path="/home/clients/edit/*" element={< ClientEdit />} />
+                        <Route path="clients/edit/*" element={<ClientEdit />} />
+                        <Route path="clients/new-client" element={<NewClient />} />
                     </Routes>
                 </div>
             </div>
