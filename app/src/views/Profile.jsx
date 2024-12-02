@@ -80,8 +80,7 @@ export default function Profile() {
                                 id="password"
                                 name="password"
                                 className="w-full p-3 border border-gray-300 rounded-md"
-                                required
-                            />
+                                required/>
                         </div>
 
                         <div>
@@ -91,8 +90,7 @@ export default function Profile() {
                                 id="newPassword"
                                 name="newPassword"
                                 className="w-full p-3 border border-gray-300 rounded-md"
-                                required
-                            />
+                                required/>
                         </div>
 
                         <div>
@@ -102,16 +100,13 @@ export default function Profile() {
                                 id="confirmPassword"
                                 name="confirmPassword"
                                 className="w-full p-3 border border-gray-300 rounded-md"
-                                required
-                            />
+                                required/>
                         </div>
 
                         <button
                             type="submit"
-                            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-200"
-                        >
-                            Cambiar Contraseña
-                        </button>
+                            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-200">
+                                Cambiar Contraseña</button>
                     </form>
                 </div>
             </div>

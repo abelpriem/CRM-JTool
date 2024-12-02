@@ -34,7 +34,7 @@ export default function Clients() {
 
         <ul>
             {clients.length
-                ? <ClientList clients={clients} />
+                ? <ClientList clients={clients} setClients={setClients}/>
                 : <p className='font-bold mt4 my-5 text-xl'>No hay clientes en la base de datos</p>
             }
         </ul>

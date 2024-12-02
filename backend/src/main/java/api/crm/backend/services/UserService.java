@@ -129,6 +129,10 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findByEmail(emailToken)
                 .orElseThrow(() -> new IllegalArgumentException("Usuario con el correo del token no encontrado"));
 
+        if (!user.getToken().equals(token)) {
+            throw new SecurityException("El token enviado no coincide con el almacenado para el usuario");
+        }
+
         if (!passwordEncoder.matches(changePasswordRequest.getPassword(), user.getPassword())) {
             throw new IllegalArgumentException("Credenciales incorrectas. Inténtelo de nuevo");
         }
@@ -139,6 +143,27 @@ public class UserService implements UserDetailsService {
 
         user.setPassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
         return userRepository.save(user);
+    }
+
+    public void deleteClientById(String authorizationHeader, Long clientId) {
+        String token = authorizationHeader.substring(7);
+        String emailToken = jwtUtils.getEmailFromToken(token);
+
+        User userRequest = userRepository.findByEmail(emailToken)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario con el correo del token no encontrado"));
+
+        if (!userRequest.getToken().equals(token)) {
+            throw new SecurityException("El token enviado no coincide con el almacenado para el usuario");
+        }
+
+        if (!"admin".equals(userRequest.getRol())) {
+            throw new SecurityException("Usuario no autorizado. Solo los ADMIN pueden realizar esta acción");
+        }
+
+        User userToDelete = userRepository.findById(clientId)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario seleccionado no encontrado"));
+
+        userRepository.deleteById(userToDelete.getUserId());
     }
 
     @Override

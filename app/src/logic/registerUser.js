@@ -8,7 +8,7 @@ export default function registerUser(username, email, password, repeatPassword) 
         body: JSON.stringify({ username, email, password, repeatPassword})
     }
 
-    return fetch('http://localhost:8080/api/users', req)
+    return fetch('http://localhost:8080/api/users/register', req)
         .catch(error => { throw new Error(error.message) })
         .then(res => {
             if (!res.ok) {
