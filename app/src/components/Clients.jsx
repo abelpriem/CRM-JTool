@@ -8,7 +8,7 @@ export default function Clients() {
     const [showError, setShowError] = useState('')
 
     useEffect(() => {
-        async function fetchClients() {
+        async function fetchListClients() {
             try {
                 const clientsList = await retrieveClients()
                 setClients(clientsList)
@@ -17,7 +17,7 @@ export default function Clients() {
             }
         }
 
-        fetchClients()
+        fetchListClients()
     }, [])
 
     return <>

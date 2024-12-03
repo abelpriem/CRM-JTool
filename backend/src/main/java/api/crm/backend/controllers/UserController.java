@@ -136,6 +136,28 @@ public class UserController {
         }
     }
 
+    @GetMapping("/users/clients/{clientId}")
+    public ResponseEntity<?> getSelectedClient(
+            @RequestHeader("Authorization") String authorizationHeader, @PathVariable Long clientId) {
+        try {
+            if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+
+            UserResponseDTO selectedClient = userService.getClientById(authorizationHeader, clientId);
+
+            System.out.println("Cliente para editar: " + selectedClient);
+
+            return new ResponseEntity<>(selectedClient, HttpStatus.OK);
+        } catch (SecurityException error) {
+            Map<String, String> errorResponse = Map.of("message", error.getMessage());
+            return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
+        } catch (IllegalArgumentException error) {
+            Map<String, String> errorResponse = Map.of("message", error.getMessage());
+            return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @DeleteMapping("/users/clients/delete/{clientId}")
     public ResponseEntity<Map<String, String>> deleteClient(@RequestHeader("Authorization") String authorizationHeader,
             @PathVariable Long clientId) {

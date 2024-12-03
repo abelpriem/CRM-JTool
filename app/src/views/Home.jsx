@@ -15,7 +15,7 @@ export default function Home() {
                         <Route path="clients" element={<Clients />} />
                         <Route path="products" element={<Products />} />
                         <Route path="orders" element={<Orders />} />
-                        <Route path="clients/edit/*" element={<ClientEdit />} />
+                        <Route path="clients/edit/:clientId" element={<ClientEdit />} />
                         <Route path="clients/new-client" element={<NewClient />} />
                     </Routes>
                 </div>

@@ -105,24 +105,6 @@ public class UserService implements UserDetailsService {
         return List.of(new UserResponseDTO(user));
     }
 
-    public List<UserResponseDTO> getClients(String authorizationHeader) {
-        String token = authorizationHeader.substring(7);
-        String emailFromToken = jwtUtils.getEmailFromToken(token);
-
-        User user = userRepository.findByEmail(emailFromToken)
-                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado. Inténtelo de nuevo"));
-
-        if (!user.getToken().equals(token)) {
-            throw new SecurityException("El token enviado no coincide con el almacenado para el usuario");
-        }
-
-        List<User> clients = userRepository.findByRol("client");
-
-        return clients.stream()
-                .map(UserResponseDTO::new)
-                .collect(Collectors.toList());
-    }
-
     public User changePassword(String authorizationHeader, ChangePasswordRequest changePasswordRequest) {
         String token = authorizationHeader.substring(7);
         String emailToken = jwtUtils.getEmailFromToken(token);
@@ -144,28 +126,6 @@ public class UserService implements UserDetailsService {
 
         user.setPassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
         return userRepository.save(user);
-    }
-
-    public void deleteClientById(String authorizationHeader, Long clientId) {
-        String token = authorizationHeader.substring(7);
-        String emailToken = jwtUtils.getEmailFromToken(token);
-
-        User userRequest = userRepository.findByEmail(emailToken)
-                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado. Inténtelo de nuevo"));
-
-        if (!userRequest.getToken().equals(token)) {
-            throw new SecurityException("El token enviado no coincide con el almacenado para el usuario");
-        }
-
-        if (!"admin".equals(userRequest.getRol())) {
-            throw new SecurityException("Usuario no autorizado. Solo los ADMIN pueden realizar esta acción");
-        }
-
-        User userToDelete = userRepository.findById(clientId)
-                .orElseThrow(
-                        () -> new IllegalArgumentException("Usuario seleccionado no encontrado. Inténtelo de nuevo"));
-
-        userRepository.deleteById(userToDelete.getUserId());
     }
 
     public User createClient(String authorizationHeader, NewClientsResponse newClientsResponse) {
@@ -195,6 +155,67 @@ public class UserService implements UserDetailsService {
         newClient.setActive(false);
 
         return userRepository.save(newClient);
+    }
+
+    public List<UserResponseDTO> getClients(String authorizationHeader) {
+        String token = authorizationHeader.substring(7);
+        String emailFromToken = jwtUtils.getEmailFromToken(token);
+
+        User user = userRepository.findByEmail(emailFromToken)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado. Inténtelo de nuevo"));
+
+        if (!user.getToken().equals(token)) {
+            throw new SecurityException("El token enviado no coincide con el almacenado para el usuario");
+        }
+
+        List<User> clients = userRepository.findByRol("client");
+
+        return clients.stream()
+                .map(UserResponseDTO::new)
+                .collect(Collectors.toList());
+    }
+
+    public UserResponseDTO getClientById(String authorizationHeader, Long clientId) {
+        String token = authorizationHeader.substring(7);
+        String emailFromToken = jwtUtils.getEmailFromToken(token);
+
+        User user = userRepository.findByEmail(emailFromToken)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado. Inténtelo de nuevo"));
+
+        if (!user.getToken().equals(token)) {
+            throw new SecurityException("El token enviado no coincide con el almacenado para el usuario");
+        }
+
+        if (!"admin".equals(user.getRol())) {
+            throw new SecurityException("Usuario no autorizado. Solo los ADMIN pueden realizar esta acción");
+        }
+
+        User client = userRepository.findById(clientId)
+                .orElseThrow(() -> new IllegalArgumentException("Cliente no encontrado. Vuelva a intentarlo"));
+
+        return new UserResponseDTO(client);
+    }
+
+    public void deleteClientById(String authorizationHeader, Long clientId) {
+        String token = authorizationHeader.substring(7);
+        String emailToken = jwtUtils.getEmailFromToken(token);
+
+        User userRequest = userRepository.findByEmail(emailToken)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado. Inténtelo de nuevo"));
+
+        if (!userRequest.getToken().equals(token)) {
+            throw new SecurityException("El token enviado no coincide con el almacenado para el usuario");
+        }
+
+        if (!"admin".equals(userRequest.getRol())) {
+            throw new SecurityException("Usuario no autorizado. Solo los ADMIN pueden realizar esta acción");
+        }
+
+        User userToDelete = userRepository.findById(clientId)
+                .orElseThrow(
+                        () -> new IllegalArgumentException("Usuario seleccionado no encontrado. Inténtelo de nuevo"));
+
+        userRepository.deleteById(userToDelete.getUserId());
     }
 
     @Override

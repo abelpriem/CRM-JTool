@@ -1,14 +1,14 @@
-import session from '../helpers/auth/session.js'
+import session from '../helpers/auth/session'
 
-export default function editClient(clientId) {
+export default function retrieveClientById(clientId) {
     const req = {
-        method: 'PATCH',
+        method: 'GET',
         headers: {
             Authorization: `Bearer ${session.token}`
         }
     }
 
-    return fetch(`http://localhost:8080/api/users/clients/edit/${clientId}`, req)
+    return fetch(`http://localhost:8080/api/users/clients/${clientId}`, req)
         .catch(error => {throw new Error(error.message)})
         .then(res => {
             if (!res.ok) {
@@ -16,5 +16,11 @@ export default function editClient(clientId) {
                     .catch(error => {throw new Error(error.message)})
                     .then(body => {throw new Error(body.message)})
             }
+
+            return res.json()
+                .catch(error => {throw new Error(error.message)})
+                .then(client => {
+                    return client
+                })
         })
 }
