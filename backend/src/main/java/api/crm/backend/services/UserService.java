@@ -14,10 +14,15 @@ import api.crm.backend.config.jwt.JwtUtils;
 import api.crm.backend.dto.UserResponseDTO;
 import api.crm.backend.dto.auth.LoginRequest;
 import api.crm.backend.dto.auth.RegisterRequest;
+import api.crm.backend.dto.clients.EditClientResponse;
 import api.crm.backend.dto.clients.NewClientsResponse;
 import api.crm.backend.dto.profile.ChangePasswordRequest;
 import api.crm.backend.models.User;
 import api.crm.backend.repository.UserRepository;
+import api.crm.backend.utils.errors.ConflictException;
+import api.crm.backend.utils.errors.CredentialsException;
+import api.crm.backend.utils.errors.ForbiddenException;
+import api.crm.backend.utils.errors.NotFoundException;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -35,15 +40,15 @@ public class UserService implements UserDetailsService {
     public User create(RegisterRequest registerRequest) {
         try {
             if (userRepository.existsByUsername(registerRequest.getUsername())) {
-                throw new IllegalArgumentException("El nombre de usuario ya existe");
+                throw new ConflictException("El nombre de usuario ya existe");
             }
 
             if (userRepository.existsByEmail(registerRequest.getEmail())) {
-                throw new IllegalArgumentException("El email ya existe. Inténtelo de nuevo");
+                throw new CredentialsException("El email ya existe. Inténtelo de nuevo");
             }
 
             if (!registerRequest.getPassword().equals(registerRequest.getRepeatPassword())) {
-                throw new IllegalArgumentException("Las contraseñas deben coincidir");
+                throw new CredentialsException("Las contraseñas deben coincidir");
             }
 
             User user = new User();
@@ -69,14 +74,14 @@ public class UserService implements UserDetailsService {
     public Map<String, String> login(LoginRequest loginRequest) {
         try {
             User user = userRepository.findByEmail(loginRequest.getEmail())
-                    .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado. Inténtelo de nuevo"));
+                    .orElseThrow(() -> new NotFoundException("Usuario no encontrado. Inténtelo de nuevo"));
 
             if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-                throw new IllegalArgumentException("Credenciales incorrectas. Inténtelo de nuevo");
+                throw new CredentialsException("Credenciales incorrectas. Inténtelo de nuevo");
             }
 
             if ("user".equals(user.getRol()) && !user.getActive()) {
-                throw new IllegalArgumentException("El usuario no está activado");
+                throw new ConflictException("El usuario no está activado");
             }
 
             String token = jwtUtils.generateToken(user.getEmail());
@@ -95,37 +100,37 @@ public class UserService implements UserDetailsService {
         String token = authorizationHeader.substring(7);
         String emailFromToken = jwtUtils.getEmailFromToken(token);
 
-        User user = userRepository.findByEmail(emailFromToken)
-                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado. Inténtelo de nuevo"));
+        User userRequest = userRepository.findByEmail(emailFromToken)
+                .orElseThrow(() -> new NotFoundException("Usuario no encontrado. Inténtelo de nuevo"));
 
-        if (!user.getToken().equals(token)) {
+        if (!userRequest.getToken().equals(token)) {
             throw new SecurityException("El token enviado no coincide con el almacenado para el usuario");
         }
 
-        return List.of(new UserResponseDTO(user));
+        return List.of(new UserResponseDTO(userRequest));
     }
 
     public User changePassword(String authorizationHeader, ChangePasswordRequest changePasswordRequest) {
         String token = authorizationHeader.substring(7);
         String emailToken = jwtUtils.getEmailFromToken(token);
 
-        User user = userRepository.findByEmail(emailToken)
-                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado. Inténtelo de nuevo"));
+        User userRequest = userRepository.findByEmail(emailToken)
+                .orElseThrow(() -> new NotFoundException("Usuario no encontrado. Inténtelo de nuevo"));
 
-        if (!user.getToken().equals(token)) {
+        if (!userRequest.getToken().equals(token)) {
             throw new SecurityException("El token enviado no coincide con el almacenado para el usuario");
         }
 
-        if (!passwordEncoder.matches(changePasswordRequest.getPassword(), user.getPassword())) {
-            throw new IllegalArgumentException("Credenciales incorrectas. Inténtelo de nuevo");
+        if (!passwordEncoder.matches(changePasswordRequest.getPassword(), userRequest.getPassword())) {
+            throw new CredentialsException("Credenciales incorrectas. Inténtelo de nuevo");
         }
 
         if (!changePasswordRequest.getNewPassword().equals(changePasswordRequest.getConfirmPassword())) {
-            throw new IllegalArgumentException("La nueva contraseña y la confirmación han de ser iguales");
+            throw new CredentialsException("La nueva contraseña y la confirmación han de ser iguales");
         }
 
-        user.setPassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
-        return userRepository.save(user);
+        userRequest.setPassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
+        return userRepository.save(userRequest);
     }
 
     public User createClient(String authorizationHeader, NewClientsResponse newClientsResponse) {
@@ -133,14 +138,18 @@ public class UserService implements UserDetailsService {
         String emailToken = jwtUtils.getEmailFromToken(token);
 
         User userRequest = userRepository.findByEmail(emailToken)
-                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado. Inténtelo de nuevo"));
+                .orElseThrow(() -> new NotFoundException("Usuario no encontrado. Inténtelo de nuevo"));
 
         if (!userRequest.getToken().equals(token)) {
             throw new SecurityException("El token enviado no coincide con el almacenado para el usuario");
         }
 
         if (!"admin".equals(userRequest.getRol())) {
-            throw new SecurityException("Usuario no autorizado. Solo los ADMIN pueden realizar esta acción");
+            throw new ForbiddenException("Usuario no autorizado. Solo los ADMIN pueden realizar esta acción");
+        }
+
+        if (userRepository.existsByEmail(newClientsResponse.getEmail())) {
+            throw new ConflictException("El cliente ya existe. Vuelva a intentarlo");
         }
 
         User newClient = new User();
@@ -161,10 +170,10 @@ public class UserService implements UserDetailsService {
         String token = authorizationHeader.substring(7);
         String emailFromToken = jwtUtils.getEmailFromToken(token);
 
-        User user = userRepository.findByEmail(emailFromToken)
-                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado. Inténtelo de nuevo"));
+        User userRequest = userRepository.findByEmail(emailFromToken)
+                .orElseThrow(() -> new NotFoundException("Usuario no encontrado. Inténtelo de nuevo"));
 
-        if (!user.getToken().equals(token)) {
+        if (!userRequest.getToken().equals(token)) {
             throw new SecurityException("El token enviado no coincide con el almacenado para el usuario");
         }
 
@@ -179,21 +188,47 @@ public class UserService implements UserDetailsService {
         String token = authorizationHeader.substring(7);
         String emailFromToken = jwtUtils.getEmailFromToken(token);
 
-        User user = userRepository.findByEmail(emailFromToken)
-                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado. Inténtelo de nuevo"));
+        User userRequest = userRepository.findByEmail(emailFromToken)
+                .orElseThrow(() -> new NotFoundException("Usuario no encontrado. Inténtelo de nuevo"));
 
-        if (!user.getToken().equals(token)) {
+        if (!userRequest.getToken().equals(token)) {
             throw new SecurityException("El token enviado no coincide con el almacenado para el usuario");
         }
 
-        if (!"admin".equals(user.getRol())) {
-            throw new SecurityException("Usuario no autorizado. Solo los ADMIN pueden realizar esta acción");
+        if (!"admin".equals(userRequest.getRol())) {
+            throw new ForbiddenException("Usuario no autorizado. Solo los ADMIN pueden realizar esta acción");
         }
 
         User client = userRepository.findById(clientId)
-                .orElseThrow(() -> new IllegalArgumentException("Cliente no encontrado. Vuelva a intentarlo"));
+                .orElseThrow(() -> new NotFoundException("Cliente no encontrado. Vuelva a intentarlo"));
 
         return new UserResponseDTO(client);
+    }
+
+    public User editClientById(String authorizationHeader, Long clientId, EditClientResponse editClientResponse) {
+        String token = authorizationHeader.substring(7);
+        String emailToken = jwtUtils.getEmailFromToken(token);
+
+        User userRequest = userRepository.findByEmail(emailToken)
+                .orElseThrow(() -> new NotFoundException("Usuario no encontrado. Inténtelo de nuevo"));
+
+        if (!userRequest.getToken().equals(token)) {
+            throw new SecurityException("El token enviado no coincide con el almacenado para el usuario");
+        }
+
+        if (!"admin".equals(userRequest.getRol())) {
+            throw new ForbiddenException("Usuario no autorizado. Solo los ADMIN pueden realizar esta acción");
+        }
+
+        User userToEdit = userRepository.findById(clientId)
+                .orElseThrow(() -> new NotFoundException("Cliente no encontrado. Vuelva a intentarlo"));
+
+        userToEdit.setUsername(editClientResponse.getName());
+        userToEdit.setEmail(editClientResponse.getEmail());
+        userToEdit.setCompany(editClientResponse.getCompany());
+        userToEdit.setPhone(editClientResponse.getPhone());
+
+        return userRepository.save(userToEdit);
     }
 
     public void deleteClientById(String authorizationHeader, Long clientId) {
@@ -201,19 +236,19 @@ public class UserService implements UserDetailsService {
         String emailToken = jwtUtils.getEmailFromToken(token);
 
         User userRequest = userRepository.findByEmail(emailToken)
-                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado. Inténtelo de nuevo"));
+                .orElseThrow(() -> new NotFoundException("Usuario no encontrado. Inténtelo de nuevo"));
 
         if (!userRequest.getToken().equals(token)) {
             throw new SecurityException("El token enviado no coincide con el almacenado para el usuario");
         }
 
         if (!"admin".equals(userRequest.getRol())) {
-            throw new SecurityException("Usuario no autorizado. Solo los ADMIN pueden realizar esta acción");
+            throw new ForbiddenException("Usuario no autorizado. Solo los ADMIN pueden realizar esta acción");
         }
 
         User userToDelete = userRepository.findById(clientId)
                 .orElseThrow(
-                        () -> new IllegalArgumentException("Usuario seleccionado no encontrado. Inténtelo de nuevo"));
+                        () -> new NotFoundException("Cliente no encontrado. Vuelva a intentarlo"));
 
         userRepository.deleteById(userToDelete.getUserId());
     }

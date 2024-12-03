@@ -15,8 +15,6 @@ export default function ClientEdit() {
     const navigate = useNavigate()
     const { clientId } = useParams()
 
-    console.log(client)
-
     useEffect(() => {
         async function fetchClient() {
             try {
@@ -53,7 +51,7 @@ export default function ClientEdit() {
         setShowMessage('')
 
         try {
-            await editClient(name, email, company, phone)
+            await editClient(clientId, name, email, company, phone)
             setShowMessage("Cliente editado correctamente!")
         } catch (error) {
             setShowError(error.message)
