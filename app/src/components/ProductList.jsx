@@ -55,7 +55,7 @@ export default function ProductList(props) {
                         <img src={`/products/${product.image}`} alt="imagen" />
                     ) : null}
                     <div className='items-center flex space-x-3'>
-                        <p className="text-xl font-bold">€ {product.price}</p>
+                        <p className="text-xl font-bold">{product.price}€</p>
                         <p className="text-xl font-thin">{product.stock} unidades</p>
                     </div>
                 </div>
