@@ -20,6 +20,9 @@ public class Product {
     private String name;
 
     @Column(nullable = false)
+    private String image;
+
+    @Column(nullable = false)
     private String description;
 
     @Column(nullable = false)
@@ -28,9 +31,10 @@ public class Product {
     @Column(nullable = false)
     private Integer stock;
 
-    public Product(Long productId, String name, String description, Double price, Integer stock) {
+    public Product(Long productId, String name, String image, String description, Double price, Integer stock) {
         this.productId = productId;
         this.name = name;
+        this.image = image;
         this.description = description;
         this.price = price;
         this.stock = stock;

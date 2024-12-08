@@ -7,6 +7,7 @@ import logout from './logout.js'
 import registerUser from './registerUser.js'
 import retrieveClientById from './retrieveClientById.js'
 import retrieveClients from './retrieveClients.js'
+import retrieveProducts from './retrieveProducts.js'
 import retrieveUser from './retrieveUser.js'
 
 export {
@@ -18,7 +19,6 @@ export {
     logout,
     registerUser,
     retrieveClientById,
-    retrieveClients,
-    retrieveUser
+    retrieveClients, retrieveProducts, retrieveUser
 }
 

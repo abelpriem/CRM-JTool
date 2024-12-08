@@ -6,10 +6,11 @@ import Navigation from './Navigation'
 import NewClient from './NewClient'
 import Orders from './Orders'
 import PrivateRoute from './PrivateRoute'
+import ProductList from './ProductList'
 import Products from './Products'
 
 export {
     ClientEdit, ClientList, Clients, Header,
-    Navigation, NewClient, Orders, PrivateRoute, Products
+    Navigation, NewClient, Orders, PrivateRoute, ProductList, Products
 }
 
