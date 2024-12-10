@@ -1,4 +1,4 @@
-# devJobs [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)[![Netlify Status](https://api.netlify.com/api/v1/badges/633082cd-8c9e-4c2e-b2fc-b3063e66d8b2/deploy-status)](https://app.netlify.com/sites/portfolio-abelprieto-fullstack/deploys)
+# CRM-JTool [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)[![Netlify Status](https://api.netlify.com/api/v1/badges/633082cd-8c9e-4c2e-b2fc-b3063e66d8b2/deploy-status)](https://app.netlify.com/sites/portfolio-abelprieto-fullstack/deploys)
 
 ![11AF1495-A4CF-42B6-852F-2AFD3C44E337_1_201_a](https://github.com/user-attachments/assets/db4ee1f8-494a-4e20-a339-f15ac84b9e23)
 
@@ -12,7 +12,7 @@ The CRM is a system designed to help companies manage, analyze, and optimize the
 - [Features](#features)
 - [Technologies](#technologies)
 - [Installation](#installation)
-- [Usage](#usage)
+- [MVP](#mvp)
 - [API](#api)
 - [UML Diagram](#uml)
 - [User Stories](#stories)
@@ -21,19 +21,19 @@ The CRM is a system designed to help companies manage, analyze, and optimize the
 
 ## Description
 
-devJobs is a job portal focused on developers and recruiters. Recruiters can post, edit, and delete job offers, as well as manage candidates and review their resumes. Candidates can search for job offers, apply, and send their information directly to recruiters.
+This CRM system allows businesses to manage their customers, products, and orders efficiently through an interactive admin panel. Users can perform CRUD operations (Create, Read, Update, Delete) on orders, with secure authentication and role-based access.
 
-The system also features authentication functionalities to ensure that only authorized users can access certain admin panels.
+The main goal is to enhance customer relationship management while streamlining internal workflows and data handling.
 
 ## Features
 
-- **Login and Authentication**: Secure login with JWT and Spring Security.
-- **Admin panel**: Allows recruiters to manage their job postings, edit their personal data, and review candidate resumes.
-- **Job search**: On the main page, candidates can filter job offers by keywords.
-- **Authentication and authorization**: Users can register, log in, and access features according to their role.
-- **Password management**: Implemented with bcrypt for secure encryption.
-- **File upload**: Candidates can upload their resumes using multer.
-- **Data validation**: Input field validation with validator.
+- **Login and Authentication**: Secure login system using JWT and Spring Security to protect user data.
+- **Active Users System**: Allows administrators to control which users are activated, granting or revoking their access to the application.
+- **Profile Panel**: Enables users to edit their personal information, manage roles, and securely change their password.
+- **Password Management**: Passwords are securely hashed and stored using bcrypt, ensuring robust encryption.
+- **Data validation**: All input fields are validated using validator to prevent invalid or malicious data submissions.
+- **Routing Security**: URL access is secured based on user roles, restricting actions and data visibility according to permissions.
+- **Orders, Products & Customers**: Comprehensive management of orders, products, and customer data, forming the core functionalities to operate the application efficiently.
 
 ## Technologies
 
@@ -46,39 +46,44 @@ The system also features authentication functionalities to ensure that only auth
 
 ### Backend
 
-- **NodeJS**: Server-side JavaScript runtime environment.
-- **Express**: Minimalist framework for building APIs.
+- **Java**: Application logic and API development.
+- **Spring Boot**: Backend framework.
+- **Spring Security**: Secure authentication and role management..
+- **Validate**: User input validation.
 - **JWT**: Authentication via JSON Web Tokens.
 - **bcrypt**: Password encryption.
-- **multer**: File uploads on the local server.
-- **validator**: User input validation.
-- **mocha/chai**: Libraries for testing and unit tests.
 
 ### Database
 
-- **MongoDB**: Non-relational database to store user information, job vacancies, and applications.
+- **MySQL**: Relational database for data storage.
+
+## Tools
+
+- **Postman**: API testing and debugging.
+- **TablePlus**: SQL database management.
 
 ## Installation
 
 ### Requirements
 
 - Node.js >= 14.x
-- MongoDB installed locally or access to a cloud instance.
+- MySQL installed locally or available on a cloud server.
+- Java 17 or above.
 
 ### Steps
 
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/tuusuario/devJobs.git
+git clone https://github.com/abelpriem/CRM-JTool.git
 
 ```
 
 2. Install backend dependencies:
 
 ```bash
-cd api
-npm install
+cd backend
+maven install
 ```
 
 3. Install frontend dependencies:
@@ -88,21 +93,14 @@ cd ../app
 npm install
 ```
 
-4. Create a .env file in the backend directory with the following environment variables:
+4. Run the application in development mode:
 
 ```bash
-MONGO_URI=tu_mongo_uri
-JWT_SECRET=tu_jwt_secret
+cd backend
+mvn spring-boot:run
 ```
 
-5. Run the application in development mode:
-
-```bash
-cd api
-node .
-```
-
-6. Run frontend in a separate terminal:
+5. Run frontend in a separate terminal:
 
 ```bash
 cd ../app
@@ -111,27 +109,42 @@ npm run dev
 
 ### Usage
 
-1. Recruiters can register and create job postings from the admin panel.
-2. Candidates can search and filter job offers on the main page, as well as apply by submitting their data and resume.
-3. Recruiters can manage their job postings and view the list of candidates from their admin panel.
+- Admin User
+
+1. As an admin, I want to log in securely, so I can manage the system.
+2. As an admin, I want to view a list of customers, so I can easily manage their details.
+3. As an admin, I want to add, edit, and delete products, so I can keep the product catalog up-to-date.
+4. As an admin, I want to create and manage orders, so I can process customer requests efficiently.
+
+- Customer
+
+1. As a customer, I want my details to be securely stored, so my interactions with the company are efficient.
+2. As a customer, I want to view available products, so I can place orders easily.
 
 ### API
 
 The API provides several endpoints for managing authentication, job postings, and users. Some example endpoints are:
 
-- `POST /users/auth`: Log in.
-- `POST /users/create`: Register a new user.
-- `GET /offers`: Get the list of job postings.
-- `POST /offers/create`: Create a new job posting (recruiters only).
-- `PUT /offers/edit/:offerUrl`: Edit a job posting (recruiters only).
-- `DELETE /offer/:offerUrl`: Delete a job posting (recruiters only).
+- `POST api/users/auth`: Log in.
+- `POST api/users/register`: Register a new user.
+- `GET api/users`: Get the list of all users.
+- `PATCH api/users/change-password`: Edit the current user password (ADMIN only).
+- `POST api/users/clients/new-client`: Create new client (ADMIN only).
+- `GET api/users/clients`: Get the list of all clients.
+- `GET api/users/clients/{clientId}`: Get only the client selected (ADMIN only).
+- `PATCH api/users/clients/edit/${clientId}`: Edit ALL the selected client (ADMIN only).
+- `DELETE api/users/clients/delete/${clientId}`: Delete selected client (ADMIN only).
+
+- `GET api/products`: Get the list of all products.
+- `PATCH api/products/edit/{productId}`: Edit selected product (ADMIN only).
+- `DELETE api/products/delete/{productId}`: Delete selected product (ADMIN only).
 
 ### Testing
 
 Unit tests have been implemented to ensure system reliability. We use the following libraries for testing:
 
-- **Mocha**: Framework for running tests.
-- **Chai**: Library for assertions.
+- **JUnit**: Framework for running tests.
+- **Mockito**: Library for assertions.
 
 To run the tests:
 
@@ -140,3 +153,7 @@ cd api
 npm run test
 
 ```
+
+## License
+
+This project is licensed under the MIT License.
