@@ -113,21 +113,26 @@ npm run dev
 
 ## UML
 
-- Aquí va el UML
+![994897D1-0DD7-4218-9DFB-EABE0F3F3B40_1_201_a](https://github.com/user-attachments/assets/52fb90e0-624b-488c-94d9-15441fb4c1f4)
 
 ## User Stories
 
 ### Admin User
 
 1. As an admin, I want to log in securely, so I can manage the system.
-2. As an admin, I want to view a list of customers, so I can easily manage their details.
-3. As an admin, I want to add, edit, and delete products, so I can keep the product catalog up-to-date.
-4. As an admin, I want to create and manage orders, so I can process customer requests efficiently.
+2. As an admin, I want to active user accounts.
+3. As an admin, I want to view a list of customers, so I can easily manage their details.
+4. As an admin, I want to add, edit, and delete costumers, so I can keep the costumers list up-to-date.
+5. As an admin, I want to view a list of products, so I can easily manage their details.
+6. As an admin, I want to add, edit, and delete products, so I can keep the product catalog up-to-date.
 
-### Customer
+### User
 
-1. As a customer, I want my details to be securely stored, so my interactions with the company are efficient.
-2. As a customer, I want to view available products, so I can place orders easily.
+1. As a user, I want my details to be securely stored, so my interactions with the company are efficient.
+2. As a user, I want to view a list of customers, so I can place orders easily.
+3. As a user, I want to view available products, so I can place orders easily.
+4. As a user, I want to check my profile with my data info.
+5. As a user, I want to change my current password.
 
 ## API
 
