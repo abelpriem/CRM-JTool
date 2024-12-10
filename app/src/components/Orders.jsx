@@ -26,7 +26,7 @@ export default function Orders() {
         )}
 
         {session.rol === "admin" && (
-            <a href="/home/orders/new-order" className="flex items-center w-40 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-800">
+            <a href="/404" className="flex items-center w-40 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-800">
                 <i className="fa fa-plus mr-2"></i>Nuevo Pedido</a>
         )}
 
