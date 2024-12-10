@@ -13,9 +13,9 @@ The CRM is a system designed to help companies manage, analyze, and optimize the
 - [Technologies](#technologies)
 - [Installation](#installation)
 - [MVP](#mvp)
+- [UML](#uml)
+- [User Stories](#user-stories)
 - [API](#api)
-- [UML Diagram](#uml)
-- [User Stories](#stories)
 - [Testing](#testing)
 - [License](#license)
 
@@ -107,23 +107,33 @@ cd ../app
 npm run dev
 ```
 
-### Usage
+## MVP
 
-- Admin User
+- Aquí va el MVP
+
+## UML
+
+- Aquí va el UML
+
+## User Stories
+
+### Admin User
 
 1. As an admin, I want to log in securely, so I can manage the system.
 2. As an admin, I want to view a list of customers, so I can easily manage their details.
 3. As an admin, I want to add, edit, and delete products, so I can keep the product catalog up-to-date.
 4. As an admin, I want to create and manage orders, so I can process customer requests efficiently.
 
-- Customer
+### Customer
 
 1. As a customer, I want my details to be securely stored, so my interactions with the company are efficient.
 2. As a customer, I want to view available products, so I can place orders easily.
 
-### API
+## API
 
 The API provides several endpoints for managing authentication, job postings, and users. Some example endpoints are:
+
+### Users
 
 - `POST api/users/auth`: Log in.
 - `POST api/users/register`: Register a new user.
@@ -135,11 +145,13 @@ The API provides several endpoints for managing authentication, job postings, an
 - `PATCH api/users/clients/edit/${clientId}`: Edit ALL the selected client (ADMIN only).
 - `DELETE api/users/clients/delete/${clientId}`: Delete selected client (ADMIN only).
 
+### Products
+
 - `GET api/products`: Get the list of all products.
 - `PATCH api/products/edit/{productId}`: Edit selected product (ADMIN only).
 - `DELETE api/products/delete/{productId}`: Delete selected product (ADMIN only).
 
-### Testing
+## Testing
 
 Unit tests have been implemented to ensure system reliability. We use the following libraries for testing:
 
@@ -151,7 +163,6 @@ To run the tests:
 ```bash
 cd api
 npm run test
-
 ```
 
 ## License
