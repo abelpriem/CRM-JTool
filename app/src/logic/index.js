@@ -2,6 +2,7 @@ import authenticateUser from './authenticateUser.js'
 import changePassword from './changePassword.js'
 import createClient from './createClient.js'
 import deleteClient from './deleteClient.js'
+import deleteProduct from './deleteProduct.js'
 import editClient from './editClient.js'
 import logout from './logout.js'
 import registerUser from './registerUser.js'
@@ -14,8 +15,7 @@ export {
     authenticateUser,
     changePassword,
     createClient,
-    deleteClient,
-    editClient,
+    deleteClient, deleteProduct, editClient,
     logout,
     registerUser,
     retrieveClientById,

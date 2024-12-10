@@ -71,7 +71,7 @@ public class ProductsController {
         }
     }
 
-    @DeleteMapping("/products/{productId}")
+    @DeleteMapping("/products/delete/{productId}")
     public ResponseEntity<Map<String, String>> deleteProduct(@RequestHeader("Authorization") String authorizationHeader,
             @PathVariable Long productId) {
         try {

@@ -1,5 +1,7 @@
 import { useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2'
 import session from '../helpers/auth/session.js'
+import { deleteProduct } from '../logic/index.js'
 
 export default function ProductList(props) {
     const products = props.products
