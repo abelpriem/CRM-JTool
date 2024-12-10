@@ -28,7 +28,7 @@ export default function Products() {
         )}
 
         {session.rol === "admin" && (
-            <a href="/home/products/new-product" className="flex items-center w-44 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-800">
+            <a href="/404" className="flex items-center w-44 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-800">
                 <i className="fa fa-plus mr-2"></i>Nuevo Producto</a>
         )}
 

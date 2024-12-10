@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import session from '../helpers/auth/session.js'
 
 export default function ProductList(props) {
     const products = props.products
@@ -59,16 +60,18 @@ export default function ProductList(props) {
                         <p className="text-xl font-thin">{product.stock} unidades</p>
                     </div>
                 </div>
-                <div className="flex space-x-3 mt-3">
-                    <a href={`/home/products/edit/${product.productId}`} className="flex items-center w-40 bg-blue-600 text-white py-2 px-4 rounded-lg">
-                        <i className="fas fa-pen-alt mr-7"></i>Editar</a>
+                {session.rol == "admin" && (
+                    <div className="flex space-x-3 mt-3">
+                        <a href={"/404"} className="flex items-center w-40 bg-blue-600 text-white py-2 px-4 rounded-lg">
+                            <i className="fas fa-pen-alt mr-7"></i>Editar</a>
 
-                    <button
-                        type="button"
-                        className="flex items-center w-40 bg-red-600 text-white py-2 px-4 rounded-lg"
-                        onClick={() => handleDeleteProduct(product.productId)}
-                    ><i className="fas fa-times mr-7"></i>Eliminar</button>
-                </div>
+                        <button
+                            type="button"
+                            className="flex items-center w-40 bg-red-600 text-white py-2 px-4 rounded-lg"
+                            onClick={() => handleDeleteProduct(product.productId)}
+                        ><i className="fas fa-times mr-7"></i>Eliminar</button>
+                    </div>
+                )}
             </li>
         ))}
     </>
