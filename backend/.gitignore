@@ -6,6 +6,7 @@ target/
 mvnw
 mvnw.cmd
 .env
+.mvn/
 
 ### STS ###
 .apt_generated
