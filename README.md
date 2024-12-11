@@ -123,6 +123,14 @@ npm run dev
 - User Repository
 - Test
 
+- [x] Create users & authenticate with credentials - JWT
+- [x] Active users only by Admin
+- [x] Add new clients on BD
+- [x] List of all clients
+- [x] Edit data users: change current password
+- [x] Edit clients: all data info
+- [x] Delete clients
+
 ### Products
 
 - Product: Model
@@ -131,6 +139,10 @@ npm run dev
 - Product Service
 - Product Repository
 - Test
+
+- [x] List of all products
+- [x] Edit data products (only by Postman)
+- [x] Delete products
 
 ### Pending:
 
