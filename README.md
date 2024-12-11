@@ -1,4 +1,4 @@
-# CRM-JTool [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)[![Netlify Status](https://api.netlify.com/api/v1/badges/633082cd-8c9e-4c2e-b2fc-b3063e66d8b2/deploy-status)](https://app.netlify.com/sites/portfolio-abelprieto-fullstack/deploys)
+# CRM-JTool v1.0 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)[![Netlify Status](https://api.netlify.com/api/v1/badges/633082cd-8c9e-4c2e-b2fc-b3063e66d8b2/deploy-status)](https://app.netlify.com/sites/portfolio-abelprieto-fullstack/deploys)
 
 ![11AF1495-A4CF-42B6-852F-2AFD3C44E337_1_201_a](https://github.com/user-attachments/assets/db4ee1f8-494a-4e20-a339-f15ac84b9e23)
 
@@ -57,7 +57,7 @@ The main goal is to enhance customer relationship management while streamlining 
 
 - **MySQL**: Relational database for data storage.
 
-## Tools
+### Tools
 
 - **Postman**: API testing and debugging.
 - **TablePlus**: SQL database management.
@@ -109,7 +109,41 @@ npm run dev
 
 ## MVP
 
-- Aquí va el MVP
+### Config & Security
+
+- CORS
+- JWT
+
+### Users
+
+- User: Model
+- DTOs: UserDto - RegisterRequest - LoginRequest - EditClientRequest - NewClientRequest - ChangePasswordRequest
+- User Controller
+- User Service
+- User Repository
+- Test
+
+### Products
+
+- Product: Model
+- DTOs: EditProductRequest
+- Product Controller
+- Product Service
+- Product Repository
+- Test
+
+### Pending:
+
+- Order (TODO)
+- OrderDetail (TODO)
+
+### Next versión (?)
+
+- [x] Create all kind of orders between users and products
+- [x] Add new product (no datasql)
+- [x] Active users without database management
+- [x] Add payment methods
+- [x] Implement more users (guest, moderator...)
 
 ## UML
 
