@@ -113,6 +113,7 @@ npm run dev
 
 - CORS
 - JWT
+- Implement custom errors
 
 ### Users
 
@@ -193,8 +194,8 @@ The API provides several endpoints for managing authentication, job postings, an
 - `POST api/users/clients/new-client`: Create new client (ADMIN only).
 - `GET api/users/clients`: Get the list of all clients.
 - `GET api/users/clients/{clientId}`: Get only the client selected (ADMIN only).
-- `PATCH api/users/clients/edit/${clientId}`: Edit ALL the selected client (ADMIN only).
-- `DELETE api/users/clients/delete/${clientId}`: Delete selected client (ADMIN only).
+- `PATCH api/users/clients/edit/{clientId}`: Edit ALL the selected client (ADMIN only).
+- `DELETE api/users/clients/delete/{clientId}`: Delete selected client (ADMIN only).
 
 ### Products
 
@@ -218,4 +219,4 @@ npm run test
 
 ## License
 
-This project is licensed under the MIT License.
+®Copyright by Abel Prieto Martín
