@@ -45,4 +45,28 @@ public class OrderTest {
         assertEquals(31.0, order.getTotal());
         assertEquals(1, order.getDetails().size());
     }
+
+    @Test
+    void testConstructorWithParameters() {
+        Order order = new Order(1L, LocalDate.of(2024, 12, 11), List.of(orderDetail), 31.0);
+        order.setUser(user);
+
+        assertEquals(1L, order.getOrderId());
+        assertEquals(LocalDate.of(2024, 12, 11), order.getOrderDate());
+        assertEquals("Example", order.getUser().getUsername());
+        assertEquals("example@email.com", order.getUser().getEmail());
+        assertEquals(31.0, order.getTotal());
+        assertEquals(1, order.getDetails().size());
+    }
+
+    @Test
+    void testConstructorWithoutParameters() {
+        Order order = new Order();
+
+        assertNull(order.getOrderId());
+        assertNull(order.getOrderDate());
+        assertNull(order.getUser());
+        assertNull(order.getDetails());
+        assertNull(order.getUser());
+    }
 }

@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 public class LoginRequestTest {
-    @Test
 
+    @Test
     void testGettersAndSetters() {
         LoginRequest loginRequest = new LoginRequest();
 

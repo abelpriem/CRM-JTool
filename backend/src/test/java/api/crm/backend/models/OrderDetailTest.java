@@ -55,4 +55,15 @@ public class OrderDetailTest {
         assertEquals(19.99, orderDetail.getUnitPrice());
         assertEquals(5, orderDetail.getQuantity());
     }
+
+    @Test
+    void testConstructorWithoutParameters() {
+        OrderDetail orderDetail = new OrderDetail();
+
+        assertNull(orderDetail.getOrderDetailId());
+        assertNull(orderDetail.getOrder());
+        assertNull(orderDetail.getProduct());
+        assertNull(orderDetail.getQuantity());
+        assertNull(orderDetail.getUnitPrice());
+    }
 }
