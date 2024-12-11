@@ -10,4 +10,13 @@ class BackendApplicationTests {
 	void contextLoads() {
 	}
 
+	@Test
+	void testMain() {
+		try {
+			BackendApplication.main(new String[] {});
+		} catch (Exception e) {
+			assert false : "Exception: " + e.getMessage();
+		}
+	}
+
 }
