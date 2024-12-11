@@ -81,7 +81,7 @@ public class ProductsController {
 
             productService.deleteProductById(authorizationHeader, productId);
 
-            Map<String, String> response = Map.of("message", "Cliente eliminado correctamente");
+            Map<String, String> response = Map.of("message", "Producto eliminado correctamente");
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (NotFoundException error) {
             Map<String, String> errorResponse = Map.of("message", error.getMessage());

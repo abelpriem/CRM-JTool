@@ -44,7 +44,7 @@ public class UserService implements UserDetailsService {
             }
 
             if (userRepository.existsByEmail(registerRequest.getEmail())) {
-                throw new CredentialsException("El email ya existe. Inténtelo de nuevo");
+                throw new ConflictException("El email ya existe. Inténtelo de nuevo");
             }
 
             if (!registerRequest.getPassword().equals(registerRequest.getRepeatPassword())) {
