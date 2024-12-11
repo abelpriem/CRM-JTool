@@ -2,7 +2,7 @@ package api.crm.backend.dto.clients;
 
 import jakarta.validation.constraints.NotBlank;
 
-public class EditClientResponse {
+public class EditClientRequest {
     @NotBlank(message = "El nombre no puede estar vacío")
     private String name;
 
@@ -15,14 +15,14 @@ public class EditClientResponse {
     @NotBlank(message = "El teléfono no puede estar vacío")
     private String phone;
 
-    public EditClientResponse(String name, String email, String company, String phone) {
+    public EditClientRequest(String name, String email, String company, String phone) {
         this.name = name;
         this.email = email;
         this.company = company;
         this.phone = phone;
     }
 
-    public EditClientResponse() {
+    public EditClientRequest() {
 
     }
 

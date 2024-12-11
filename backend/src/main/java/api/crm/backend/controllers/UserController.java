@@ -20,8 +20,8 @@ import api.crm.backend.config.jwt.JwtUtils;
 import api.crm.backend.dto.UserResponseDTO;
 import api.crm.backend.dto.auth.LoginRequest;
 import api.crm.backend.dto.auth.RegisterRequest;
-import api.crm.backend.dto.clients.EditClientResponse;
-import api.crm.backend.dto.clients.NewClientsResponse;
+import api.crm.backend.dto.clients.EditClientRequest;
+import api.crm.backend.dto.clients.NewClientRequest;
 import api.crm.backend.dto.profile.ChangePasswordRequest;
 import api.crm.backend.services.UserService;
 import api.crm.backend.utils.errors.ConflictException;
@@ -115,13 +115,13 @@ public class UserController {
 
     @PostMapping("/users/clients/new-client")
     public ResponseEntity<Map<String, String>> createClient(@RequestHeader("Authorization") String authorizationHeader,
-            @Valid @RequestBody NewClientsResponse newClientsResponse) {
+            @Valid @RequestBody NewClientRequest newClientRequest) {
         try {
             if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
             }
 
-            userService.createClient(authorizationHeader, newClientsResponse);
+            userService.createClient(authorizationHeader, newClientRequest);
 
             Map<String, String> response = Map.of("message", "Nuevo cliente creado correctamente");
             return new ResponseEntity<>(response, HttpStatus.CREATED);
@@ -183,13 +183,13 @@ public class UserController {
 
     @PatchMapping("/users/clients/edit/{clientId}")
     public ResponseEntity<Map<String, String>> editClient(@RequestHeader("Authorization") String authorizationHeader,
-            @PathVariable Long clientId, @Valid @RequestBody EditClientResponse editClientResponse) {
+            @PathVariable Long clientId, @Valid @RequestBody EditClientRequest editClientRequest) {
         try {
             if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
             }
 
-            userService.editClientById(authorizationHeader, clientId, editClientResponse);
+            userService.editClientById(authorizationHeader, clientId, editClientRequest);
 
             Map<String, String> response = Map.of("message", "Cliente editado correctamente");
             return new ResponseEntity<>(response, HttpStatus.OK);

@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import api.crm.backend.config.jwt.JwtUtils;
-import api.crm.backend.dto.products.EditProductResponse;
+import api.crm.backend.dto.products.EditProductRequest;
 import api.crm.backend.models.Product;
 import api.crm.backend.models.User;
 import api.crm.backend.repository.ProductRepository;
@@ -43,7 +43,7 @@ public class ProductService {
     }
 
     public Product editProductById(String authorizationHeader, Long productId,
-            EditProductResponse editProductResponse) {
+            EditProductRequest editProductRequest) {
         String token = authorizationHeader.substring(7);
         String emailToken = jwtUtils.getEmailFromToken(token);
 
@@ -61,11 +61,11 @@ public class ProductService {
         Product productToEdit = productRepository.findById(productId)
                 .orElseThrow(() -> new NotFoundException("Producto no encontrado. Vuelva a intentarlo"));
 
-        productToEdit.setName(editProductResponse.getName());
-        productToEdit.setImage(editProductResponse.getImage());
-        productToEdit.setDescription(editProductResponse.getDescription());
-        productToEdit.setPrice(editProductResponse.getPrice());
-        productToEdit.setStock(editProductResponse.getStock());
+        productToEdit.setName(editProductRequest.getName());
+        productToEdit.setImage(editProductRequest.getImage());
+        productToEdit.setDescription(editProductRequest.getDescription());
+        productToEdit.setPrice(editProductRequest.getPrice());
+        productToEdit.setStock(editProductRequest.getStock());
 
         return productRepository.save(productToEdit);
     }

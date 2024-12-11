@@ -2,7 +2,7 @@ package api.crm.backend.dto.products;
 
 import jakarta.validation.constraints.NotBlank;
 
-public class EditProductResponse {
+public class EditProductRequest {
     @NotBlank(message = "El nombre no puede estar vacío")
     private String name;
 
@@ -18,7 +18,7 @@ public class EditProductResponse {
     @NotBlank(message = "El stock no puede estar vacío")
     private Integer stock;
 
-    public EditProductResponse(String name, String image, String description, Double price, Integer stock) {
+    public EditProductRequest(String name, String image, String description, Double price, Integer stock) {
         this.name = name;
         this.image = image;
         this.description = description;
@@ -26,7 +26,7 @@ public class EditProductResponse {
         this.stock = stock;
     }
 
-    public EditProductResponse() {
+    public EditProductRequest() {
 
     }
 

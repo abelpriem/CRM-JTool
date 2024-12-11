@@ -14,8 +14,8 @@ import api.crm.backend.config.jwt.JwtUtils;
 import api.crm.backend.dto.UserResponseDTO;
 import api.crm.backend.dto.auth.LoginRequest;
 import api.crm.backend.dto.auth.RegisterRequest;
-import api.crm.backend.dto.clients.EditClientResponse;
-import api.crm.backend.dto.clients.NewClientsResponse;
+import api.crm.backend.dto.clients.EditClientRequest;
+import api.crm.backend.dto.clients.NewClientRequest;
 import api.crm.backend.dto.profile.ChangePasswordRequest;
 import api.crm.backend.models.User;
 import api.crm.backend.repository.UserRepository;
@@ -133,7 +133,7 @@ public class UserService implements UserDetailsService {
         return userRepository.save(userRequest);
     }
 
-    public User createClient(String authorizationHeader, NewClientsResponse newClientsResponse) {
+    public User createClient(String authorizationHeader, NewClientRequest newClientRequest) {
         String token = authorizationHeader.substring(7);
         String emailToken = jwtUtils.getEmailFromToken(token);
 
@@ -148,16 +148,16 @@ public class UserService implements UserDetailsService {
             throw new ForbiddenException("Usuario no autorizado. Solo los ADMIN pueden realizar esta acción");
         }
 
-        if (userRepository.existsByEmail(newClientsResponse.getEmail())) {
+        if (userRepository.existsByEmail(newClientRequest.getEmail())) {
             throw new ConflictException("El cliente ya existe. Vuelva a intentarlo");
         }
 
         User newClient = new User();
 
-        newClient.setUsername(newClientsResponse.getName());
-        newClient.setEmail(newClientsResponse.getEmail());
-        newClient.setCompany(newClientsResponse.getCompany());
-        newClient.setPhone(newClientsResponse.getPhone());
+        newClient.setUsername(newClientRequest.getName());
+        newClient.setEmail(newClientRequest.getEmail());
+        newClient.setCompany(newClientRequest.getCompany());
+        newClient.setPhone(newClientRequest.getPhone());
 
         newClient.setRol("client");
         newClient.setPassword(passwordEncoder.encode("123123123"));
@@ -205,7 +205,7 @@ public class UserService implements UserDetailsService {
         return new UserResponseDTO(client);
     }
 
-    public User editClientById(String authorizationHeader, Long clientId, EditClientResponse editClientResponse) {
+    public User editClientById(String authorizationHeader, Long clientId, EditClientRequest editClientRequest) {
         String token = authorizationHeader.substring(7);
         String emailToken = jwtUtils.getEmailFromToken(token);
 
@@ -223,10 +223,10 @@ public class UserService implements UserDetailsService {
         User userToEdit = userRepository.findById(clientId)
                 .orElseThrow(() -> new NotFoundException("Cliente no encontrado. Vuelva a intentarlo"));
 
-        userToEdit.setUsername(editClientResponse.getName());
-        userToEdit.setEmail(editClientResponse.getEmail());
-        userToEdit.setCompany(editClientResponse.getCompany());
-        userToEdit.setPhone(editClientResponse.getPhone());
+        userToEdit.setUsername(editClientRequest.getName());
+        userToEdit.setEmail(editClientRequest.getEmail());
+        userToEdit.setCompany(editClientRequest.getCompany());
+        userToEdit.setPhone(editClientRequest.getPhone());
 
         return userRepository.save(userToEdit);
     }

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import api.crm.backend.config.jwt.JwtUtils;
-import api.crm.backend.dto.products.EditProductResponse;
+import api.crm.backend.dto.products.EditProductRequest;
 import api.crm.backend.models.Product;
 import api.crm.backend.services.ProductService;
 import api.crm.backend.utils.errors.ForbiddenException;
@@ -49,13 +49,13 @@ public class ProductsController {
 
     @PatchMapping("/products/edit/{productId}")
     public ResponseEntity<Map<String, String>> editProduct(@RequestHeader("Authorization") String authorizationHeader,
-            @PathVariable Long productId, @Valid @RequestBody EditProductResponse editProductResponse) {
+            @PathVariable Long productId, @Valid @RequestBody EditProductRequest editProductRequest) {
         try {
             if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
             }
 
-            productService.editProductById(authorizationHeader, productId, editProductResponse);
+            productService.editProductById(authorizationHeader, productId, editProductRequest);
 
             Map<String, String> response = Map.of("message", "Producto editado correctamente");
             return new ResponseEntity<>(response, HttpStatus.OK);
