@@ -20,25 +20,33 @@ class UserTest {
     @Mock
     private UserRepository userRepository; // Simulamos el repositorio
 
+    @Mock
+    private PasswordEncoder passwordEncoder; // Simulamos el codificador de contraseñas
+
     @InjectMocks
     private UserService userService; // El servicio que estamos probando
+
     private RegisterRequest mockRegisterRequest;
-    private PasswordEncoder passwordEncoder;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        mockRegisterRequest = new RegisterRequest("john_doe", "john.doe@example.com", "password123", "password123");
+
+        // Crear un objeto simulado para la solicitud de registro
+        mockRegisterRequest = new RegisterRequest(
+                "john_doe",
+                "john.doe@example.com",
+                "password123",
+                "password123");
     }
 
     @Test
     void testCreateUser() {
-        // Simular el comportamiento de la encriptación con bcrypt
+        // Simular el comportamiento del codificador de contraseñas
         when(passwordEncoder.encode(anyString())).thenReturn("encryptedPassword123");
 
         // Crear un objeto User simulado
         User mockUser = new User();
-
         mockUser.setUsername(mockRegisterRequest.getUsername());
         mockUser.setEmail(mockRegisterRequest.getEmail());
         mockUser.setPassword("encryptedPassword123"); // Contraseña cifrada

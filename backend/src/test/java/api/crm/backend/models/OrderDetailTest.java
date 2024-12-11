@@ -1,5 +1,5 @@
 package api.crm.backend.models;
 
-public class OrderDetail {
+public class OrderDetailTest {
 
 }
