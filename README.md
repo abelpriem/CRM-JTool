@@ -213,8 +213,8 @@ Unit tests have been implemented to ensure system reliability. We use the follow
 To run the tests:
 
 ```bash
-cd api
-npm run test
+cd backend
+mvn spring-boot-test:run
 ```
 
 ## License
