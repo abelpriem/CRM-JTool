@@ -72,6 +72,32 @@ public class UserController {
         }
     }
 
+    @PatchMapping("/users/active/{userId}")
+    public ResponseEntity<Map<String, String>> activeUser(@RequestHeader("Authorization") String authorizationHeader,
+            @PathVariable Long userId) {
+        try {
+            if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+
+            boolean isActive = userService.active(authorizationHeader, userId);
+
+            if (isActive) {
+                Map<String, String> response = Map.of("Usuario activo: ", "true");
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            }
+
+            Map<String, String> response = Map.of("Usuario activo: ", "false");
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (NotFoundException error) {
+            Map<String, String> errorResponse = Map.of("message", error.getMessage());
+            return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+        } catch (ForbiddenException error) {
+            Map<String, String> errorResponse = Map.of("message", error.getMessage());
+            return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
+        }
+    }
+
     @GetMapping("/users")
     public ResponseEntity<List<UserResponseDTO>> getUser(@RequestHeader("Authorization") String authorizationHeader) {
         try {

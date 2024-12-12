@@ -96,6 +96,30 @@ public class UserService implements UserDetailsService {
         }
     }
 
+    public Boolean active(String authorizationHeader, Long userId) {
+        String token = authorizationHeader.substring(7);
+        String emailFromToken = jwtUtils.getEmailFromToken(token);
+
+        User userRequest = userRepository.findByEmail(emailFromToken)
+                .orElseThrow(() -> new NotFoundException("Usuario no encontrado. Inténtelo de nuevo"));
+
+        if (!userRequest.getToken().equals(token)) {
+            throw new SecurityException("El token enviado no coincide con el almacenado para el usuario");
+        }
+
+        if (!"admin".equals(userRequest.getRol())) {
+            throw new ForbiddenException("Usuario no autorizado. Solo los ADMIN pueden realizar esta acción");
+        }
+
+        User userToActive = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("Usuario a activar no encontrado. Inténtelo de nuevo"));
+
+        userToActive.setActive(!userToActive.getActive());
+        userRepository.save(userToActive);
+
+        return userToActive.getActive();
+    }
+
     public List<UserResponseDTO> getUser(String authorizationHeader) {
         String token = authorizationHeader.substring(7);
         String emailFromToken = jwtUtils.getEmailFromToken(token);
