@@ -153,10 +153,9 @@ npm run dev
 ### Next versión (?)
 
 - [x] Create all kind of orders between users and products
-- [x] Add new product (no datasql)
-- [x] Active users without database management
+- [x] Add new product (no datasql inyection)
 - [x] Add payment methods
-- [x] Implement more users (guest, moderator...)
+- [x] Implement more users/roles (guest, moderator...)
 
 ## UML
 
@@ -189,6 +188,7 @@ The API provides several endpoints for managing authentication, job postings, an
 
 - `POST api/users/auth`: Log in.
 - `POST api/users/register`: Register a new user.
+- `PATCH api/users/active/{userId}`: Active/desactive users (ADMIN only).
 - `GET api/users`: Get the list of all users.
 - `PATCH api/users/change-password`: Edit the current user password (ADMIN only).
 - `POST api/users/clients/new-client`: Create new client (ADMIN only).
